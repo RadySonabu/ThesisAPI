@@ -19,7 +19,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=None), name='schema-swagger-ui'),
     path('', include('dashboard.urls')),
-    path('', include('user.urls')),
+    path('api/v1/user/', include('user.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='dashboard/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='dashboard/logout.html'), name='logout'),
 ]

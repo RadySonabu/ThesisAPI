@@ -40,7 +40,6 @@ BUILTIN_APPS = [
 
 LOCAL_APPS = [
     'user',
-    'files',
     'dashboard',
     
 ]
