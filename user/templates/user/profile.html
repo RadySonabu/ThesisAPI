@@ -1,0 +1,14 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <div class="media">
+    <img class="rounded-circle account-img" src="https://cdn.onebauer.media/one/empire-images/articles/5ce3c45b133d503e3a4a0bc6/john-wick-3-tr.jpg?quality=50&width=1800&ratio=16-9&resizeStyle=aspectfill&format=jpg">
+    <div class="media-body">
+        <h2 class="account-heading">{{ user.first_name }} {{ user.last_name }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+    </div>
+    </div>
+    <!-- FORM HERE -->
+</div>
+{% endblock content %}
