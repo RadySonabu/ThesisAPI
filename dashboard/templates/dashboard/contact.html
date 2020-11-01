@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <div>
+                <h3>
+                    <b>Book a virtual appointment?</b>
+                </h3>
+              </div>
+            <div>
+                <h5>Email: {{doctor.email}}</h5>
+            </div>
+            <div>
+                <h5>Phone: {{doctor.phone_number}}</h5>
+            </div>
+        </div>
+      </div>
+      <div class=" card p-3 col-md-6">
+          <h2>Steps:</h2>
+          <div>1. Send an email to <i><b>{{doctor.email}}</b></i> or call <i><b>{{doctor.phone_number}}</b></i> and wait for confirmation.</div>
+          <div>2. When the appointment is confirmed, a link to a video call will be send to your email address that you've used to book an appointment</div>
+          <div>3. Prepare an image of the area of the skin that you are concerned as the doctor may request you to send the image to his email for further analysis.</div>
+      </div>
+  </div>
+{% endblock content %}

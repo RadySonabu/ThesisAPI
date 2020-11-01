@@ -1,16 +1,20 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
 <div class="col-md-12">
-    <div class="row">
-        <div class="card bg-warning col-md-3 m-1">
-            <div class="card-body">Upload Image</div>
+    <div class="row" style="text-align:center; margin:auto">
+        <div class="card col-md-3 m-1">
+            <a style="text-decoration:none" href="{% url 'file-upload' %}">
+                <div class="card-body"><h3>Upload Image</h3></div>
+            </a>
         </div>
-        <div class="card bg-warning col-md-3 m-1">
-            <div class="card-body">Consult a Doctor</div>
+        <div class="card col-md-3 m-1">
+            <div class="card-body"><h3>Consult a Doctor</h3></div>
         </div>
-        <div class="card bg-warning col-md-3 m-1">
-            <div class="card-body">Others</div>
+        <div class="card col-md-3 m-1">
+            <div class="card-body"><h3>Call</h3></div>
         </div>
     </div>
 </div>
+
+    
 {% endblock content %}

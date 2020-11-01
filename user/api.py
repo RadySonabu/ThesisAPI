@@ -49,7 +49,10 @@ class UserLoginAPI(generics.GenericAPIView):
         user = serializer.validated_data
         access_token = AccessToken.for_user(user)
 
-        token = {'token': str(access_token)}
+        token = {
+            'token': str(access_token),
+            'id': user.id
+            }
         return Response(token)
 
 class UserLogoutAPI(generics.GenericAPIView):

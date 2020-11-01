@@ -11,6 +11,9 @@ class Role(models.Model):
     
     name = models.CharField(max_length=50, default=1)
 
+    def __str__(self):
+        return self.name
+        
 class MyUser(AbstractUser):
     """ Base model for patient
     and doctor """
@@ -49,3 +52,7 @@ class MyUser(AbstractUser):
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
+
+
+    def __str__(self):
+        return f'{self.id}'

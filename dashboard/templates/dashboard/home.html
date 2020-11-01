@@ -2,17 +2,63 @@
 {% block content %}
     <div class="col-md-12">
         <div class="row">
-            <div class="card  col-md-3 m-1">
+            <div class="card  col-md-4 m-1">
                 <div class="card-body">
-                    Result Status
+                    <h3>Result Status</h3>
+                    {% for item in uploads %}
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div><b>Image number: </b></div>
+                            <div>{{ item.id }}</div>
+                            <div><b>Date Uploaded: </b></div>
+                            <div>{{ item.date_upload }}</div>
+                            <div><b>Result </b></div>
+                            <div>pending...</div>
+                            <br>
+                        </div>
+                        <div class="col-md-6">
+                            <div><img style="max-width:100%;
+                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{item.file_uploaded}}" alt="skin cancer image"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            <div class="card  col-md-3 m-1">
-                <div class="card-body">Doctor</div>
+            {% if request.user.role.id == 1 %}
+                <div class="card  col-md-3 m-1">
+                    <div class="card-body"><h3>Available Doctor</h3></div>
+                    <div class="card-body"><h5>
+                        {% for doctor in doctors %}
+                        <a href="{% url 'contact-info' doctor.id %}">
+                            <div>Dr. {{doctor.first_name}} {{doctor.last_name}}</div>
+                        </a>
+                            
+                        {% endfor %}
+                    </h5></div>
+                    <div></div>
+                </div>
+            {% endif %}
+            <div class="card  col-md-3  p-3 text-center">
+                <div>
+                    <a style="text-decoration:none" href="{% url 'file-upload' %}">
+                        <div class="btn btn-dark mt-5">
+                            <h3 style="color: white; vertical-align: middle;">Upload Image</h3>
+                        </div>
+                    </a>
+                </div>
+                
+                {% if request.user.role.id == 2 %}
+                    <div>
+                        <a style="text-decoration:none" href="{% url 'create-room' %}">
+                            <div class="btn btn-dark mt-5">
+                                <h5 style="color: white; vertical-align: middle;">Start Video Chat</h5>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                
             </div>
-            <div class="card  col-md-3 m-1">
-                <div class="card-body">Others</div>
-            </div>
+            
         </div>
     </div>
 {% endblock content %}
