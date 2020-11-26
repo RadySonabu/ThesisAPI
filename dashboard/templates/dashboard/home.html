@@ -1,19 +1,19 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
+
     <div class="col-md-12">
         <div class="row">
             <div class="card  col-md-4 m-1">
-                <div class="card-body">
-                    <h3>Result Status</h3>
+                <div class="card-body" id='txtInput'>
+                    <h3>Result Status<div style="display: none;">.</div></h3>
                     {% for item in uploads %}
                     <div class="row ">
                         <div class="col-md-6">
-                            <div><b>Image number: </b></div>
-                            <div>{{ item.id }}</div>
+                            <div><b>Image: </b>{{ item.id }} <div style="display: none;">.</div></div>
                             <div><b>Date Uploaded: </b></div>
-                            <div>{{ item.date_upload }}</div>
-                            <div><b>Result </b></div>
-                            <div>pending...</div>
+                            <div>{{ item.date_upload }}<div style="display: none;">.</div></div>
+                            <div><b>Result: </b></div>
+                            <div>{{ item.is_cancer }}<div style="display: none;">.</div></div>
                             <br>
                         </div>
                         <div class="col-md-6">
@@ -24,21 +24,15 @@
                     {% endfor %}
                 </div>
             </div>
-            {% if request.user.role.id == 1 %}
-                <div class="card  col-md-3 m-1">
-                    <div class="card-body"><h3>Available Doctor</h3></div>
-                    <div class="card-body"><h5>
-                        {% for doctor in doctors %}
-                        <a href="{% url 'contact-info' doctor.id %}">
-                            <div>Dr. {{doctor.first_name}} {{doctor.last_name}}</div>
-                        </a>
-                            
-                        {% endfor %}
-                    </h5></div>
-                    <div></div>
+            <div class="card m-1 col-md-4" style="position: relative; ">
+                <div class="chart-container " >
+                    <canvas id="myChart"></canvas>
                 </div>
-            {% endif %}
-            <div class="card  col-md-3  p-3 text-center">
+                <div class="chart-container " >
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3  p-3 text-center">
                 <div>
                     <a style="text-decoration:none" href="{% url 'file-upload' %}">
                         <div class="btn btn-dark mt-5">
@@ -56,9 +50,114 @@
                         </a>
                     </div>
                 {% endif %}
-                
+                <br><br>
+                <div>
+                    <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
+                </div>
             </div>
             
         </div>
     </div>
+    <!-- <input id='txtInput' /> <br><br>     -->
+    <script>
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'Female', 'Male'],
+                datasets: [{
+                    label: 'Total # of Cancer',
+                    data: [{{total_gender}}, {{gender_female}}, {{gender_male}}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'abdomen', 'acral', 'chest', 'upper_extremity', 'lower_extremity'],
+                datasets: [{
+                    label: 'Total # of Cancer per Localization',
+                    data: [{{total_gender}}, {{abdomen}}, {{gendacraler_male}},
+                             {{upper_extremity}}, {{lower_extremity}}
+                        ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        var txtInput = document.getElementById('txtInput');
+        // var voiceList = document.querySelector('#voiceList');
+        var btnSpeak = document.querySelector('#btnSpeak');
+        var synth = window.speechSynthesis;
+        var voices = [];
+
+
+        var doctorBtnSpeak = document.querySelector('#doctorBtnSpeak');
+        var doctorDetail = document.getElementById('doctorDetail');
+
+
+
+        btnSpeak.addEventListener('click', ()=> {
+            var toSpeak = new SpeechSynthesisUtterance(txtInput.innerHTML);
+            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+            synth.speak(toSpeak);
+        });
+
+        doctorBtnSpeak.addEventListener('click', ()=> {
+            var toSpeak = new SpeechSynthesisUtterance("Viewing contact details");
+            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+            synth.speak(toSpeak);
+        });
+
+    </script>
 {% endblock content %}

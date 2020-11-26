@@ -164,3 +164,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 TOK_KEY = '46764812'
 TOK_SECRET ='c6376c5a1c8c5c7c40d97235d852d6d50698e1a3'
+
+CRISPY_TEMPLATE_PACK='bootstrap4'

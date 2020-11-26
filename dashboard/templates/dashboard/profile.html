@@ -10,8 +10,19 @@
         <p class="text-secondary"><b>Phone: </b>{{ user.phone_number }}</p>
         <p class="text-secondary"><b>Blood Type: </b>{{ user.blood_type }}</p>
         <p class="text-secondary"><b>Role: {{user.role|title}}</p>
+
     </div>
     </div>
-    <!-- FORM HERE -->
+    <a href="{% url 'profile-update' %}">
+        <button class="btn btn-primary" type="submit">
+            Update
+        </button>
+    </a>
+    <a href="{% url 'profile-delete' user.id %}">
+        <button class="btn btn-warning" type="submit">
+            Delete
+        </button>
+    </a>
+    
 </div>
 {% endblock content %}

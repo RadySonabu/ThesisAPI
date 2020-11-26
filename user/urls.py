@@ -9,5 +9,5 @@ urlpatterns = [
     path('delete/<pk>/', api.UserDestroyAPI.as_view(), name='user-delete'),
     path('login/', api.UserLoginAPI.as_view(), name='user-login'),
     path('logout/', api.UserLogoutAPI.as_view(), name='user-logout'),
-
+    
 ]

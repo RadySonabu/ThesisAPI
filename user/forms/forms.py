@@ -19,3 +19,14 @@ class UserRegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class UpdateUserForm(forms.ModelForm):
+    
+    class Meta:
+        model = MyUser
+        fields = ['email', 
+        'first_name', 'middle_name', 'last_name',
+        'age', 'blood_type', 'role', 'phone_number',
+        'street', 'city', 'barangay', 'postal_code'
+        ]

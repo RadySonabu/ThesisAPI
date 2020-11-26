@@ -1,19 +1,18 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
-<div class="col-md-12">
-    <div class="row" style="text-align:center; margin:auto">
-        <div class="card col-md-3 m-1">
-            <a style="text-decoration:none" href="{% url 'file-upload' %}">
-                <div class="card-body"><h3>Upload Image</h3></div>
-            </a>
-        </div>
-        <div class="card col-md-3 m-1">
-            <div class="card-body"><h3>Consult a Doctor</h3></div>
-        </div>
-        <div class="card col-md-3 m-1">
-            <div class="card-body"><h3>Call</h3></div>
-        </div>
+<div class="card  col-md-4 m-1">
+    <div class="card-body">
+        <h3>Available Doctor</h3>
+        <br>
+        {% for doctor in doctors %}
+        <a href="{% url 'contact-info' doctor.id %}" id="doctorDetail">
+            <h5><div id='doctorBtnSpeak'>Dr. {{doctor.first_name| title}} {{doctor.last_name | title}}</div></h5>
+            <i><div>Dr. {{doctor.email}}</div></i>
+            <br>
+        </a>
+        {% endfor %}
     </div>
+    <div></div>
 </div>
 
     
