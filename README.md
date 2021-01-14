@@ -1,2 +1,1 @@
-# Thesis
-Thesis - Skin Cancer Detection using AI 
+Skin cancer detection using Neural Network

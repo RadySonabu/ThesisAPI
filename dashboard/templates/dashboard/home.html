@@ -1,4 +1,162 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
-    <h1>Home</h1>
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="card  col-md-4 m-1">
+                <div class="card-body" id='txtInput'>
+                    <h3>
+                        <div class="row">
+                            <div class="ml-3">Result Status</div><div style="display: none;">.</div>
+                        <a style="text-decoration:none" href="{% url 'file-upload' %}">
+                            <div class="btn btn-sm btn-dark ml-5">
+                                Upload
+                            </div>
+                        </a>
+                        </div>
+                        <!-- {% if request.user.role == 2 %}
+                        <div>
+                                <a style="text-decoration:none" href="{% url 'create-room' %}">
+                                    <div class="btn btn-dark mt-5">
+                                        <h5 style="color: white; vertical-align: middle;">Start Video Chat</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+                        <br><br> -->
+                        
+                    </h3>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div><b>Image: </b>{{ uploads.id }} <div style="display: none;">.</div></div>
+                            <div><b>Date Uploaded: </b></div>
+                            <div>{{ uploads.date_upload }}<div style="display: none;">.</div></div>
+                            <div><b>Result: </b></div>
+                            <div>{{ uploads.is_cancer }}<div style="display: none;">.</div></div>
+                            <br>
+                            Precision, Recall, Accuracy
+                            <div>
+                                <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div><img style="max-width:100%;
+                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{uploads.file_uploaded}}" alt="skin cancer image"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card m-1 col-md-4" style="position: relative; ">
+                <h3 class="text-center p-3">Base on your age group</h3>
+                <div class="chart-container " >
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="chart-container " >
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <input id='txtInput' /> <br><br>     -->
+    <script>
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'Female', 'Male'],
+                datasets: [{
+                    label: 'Total # of Cancer per Gender',
+                    data: [{{total_gender}}, {{gender_female}}, {{gender_male}}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'abdomen', 'face', 'chest', 'upper_extremity', 'lower_extremity'],
+                datasets: [{
+                    label: 'Total # of Cancer per Localization',
+                    data: [{{total_gender}}, {{abdomen}}, {{face}},
+                             {{upper_extremity}}, {{lower_extremity}}
+                        ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        var txtInput = document.getElementById('txtInput');
+        // var voiceList = document.querySelector('#voiceList');
+        var btnSpeak = document.querySelector('#btnSpeak');
+        var synth = window.speechSynthesis;
+        var voices = [];
+
+
+        var doctorBtnSpeak = document.querySelector('#doctorBtnSpeak');
+        var doctorDetail = document.getElementById('doctorDetail');
+
+
+
+        btnSpeak.addEventListener('click', ()=> {
+            var toSpeak = new SpeechSynthesisUtterance(txtInput.innerHTML);
+            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+            synth.speak(toSpeak);
+        });
+
+        doctorBtnSpeak.addEventListener('click', ()=> {
+            var toSpeak = new SpeechSynthesisUtterance("Viewing contact details");
+            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+            synth.speak(toSpeak);
+        });
+
+    </script>
 {% endblock content %}

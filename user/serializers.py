@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import MyUser
+from .models import MyUser 
 
 
 class UserInputSerializer(serializers.ModelSerializer):
     """ Serializer for User Create and Update """
+    # user_role = serializers.PrimaryKeyRelatedField(source='role', queryset=Role.objects.all())
     
     class Meta:
         model = MyUser
@@ -40,7 +41,6 @@ class UserInputSerializer(serializers.ModelSerializer):
 
 class UserOutputSerializer(serializers.ModelSerializer):
     """ Serializer for User Retrieve """
-
     class Meta:
         model = MyUser
         fields = [

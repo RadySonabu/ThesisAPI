@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = 'c36d2ke(^213ov@6_(syknol%dd-tx*l6cg3eg$tlv9^_pt8pu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','thesis-web-app-dot-samp-051520.et.r.appspot.com', 'samp-051520.et.r.appspot.com']
+ALLOWED_HOSTS = ['127.0.0.1', '*']
 
 
 # Application definition
@@ -40,18 +41,25 @@ BUILTIN_APPS = [
 
 LOCAL_APPS = [
     'user',
-    'files',
     'dashboard',
     
 ]
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework_simplejwt',
     'crispy_forms',
     'drf_yasg',
+    'django_filters',
 ]
 
 INSTALLED_APPS = BUILTIN_APPS  + LOCAL_APPS + THIRD_PARTY_APPS
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 3
+}
 
 AUTH_USER_MODEL = 'user.MyUser'
 
@@ -97,11 +105,11 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=user'
         },
-        'NAME': 'dfo3tflb8trk86',  # os.environ.get('DB_NAME)
-        'USER': 'sfurugfnkxbnwy',  # os.environ.get('DB_USER)
-        'PASSWORD': '90d010e22cdb025763b0fb6db55cecd4ef51d58c48ccea77ac0cacf1f220efad',  # os.environ.get('DB_PASS)
-        'HOST': 'ec2-52-6-143-153.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': config('PGSQL_DATABASE'), 
+        'USER': config('PGSQL_USER'), 
+        'PASSWORD': config('PGSQL_PASSWORD'),  
+        'HOST': config('PGSQL_HOST'),
+        'PORT': config('PGSQL_PORT'),
     }
 }
 
@@ -147,9 +155,15 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+TOK_KEY = '46764812'
+TOK_SECRET ='c6376c5a1c8c5c7c40d97235d852d6d50698e1a3'
+
+CRISPY_TEMPLATE_PACK='bootstrap4'

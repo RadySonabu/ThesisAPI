@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 id="txtInput">Upload Skin Cancer Image</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <button id='btnSpeak' class="btn btn-outline-info" type="submit">
+        Upload
+    </button>
+</form>
+
+<script>
+
+    var txtInput = document.getElementById('txtInput');
+    var voiceList = document.getElementById('voiceList');
+    var btnSpeak = document.querySelector('#btnSpeak');
+    var synth = window.speechSynthesis;
+    var voices = [];
+
+
+    btnSpeak.addEventListener('click', ()=> {
+        var toSpeak = new SpeechSynthesisUtterance("Upload button clicked, Uploading");
+        var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+        synth.speak(toSpeak);
+    });
+
+
+</script>
+{% endblock content %}
