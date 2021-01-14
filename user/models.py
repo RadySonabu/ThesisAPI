@@ -3,26 +3,31 @@ from django.db import models
 import uuid
 
 
-class Role(models.Model):
-    '''
-    The Role entries are managed by the system,
-    automatically created via a Django data migration.
-    '''
+# class Role(models.Model):
+#     '''
+#     The Role entries are managed by the system,
+#     automatically created via a Django data migration.
+#     '''
     
-    name = models.CharField(max_length=50, default=1)
+#     name = models.CharField(max_length=50, default=1)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
         
 class MyUser(AbstractUser):
     """ Base model for patient
     and doctor """
+    ROLE_CHOICES = (
+        (1, 'patient'),
+        (2, 'doctor'),
+        (3, 'developer'),
+    )
 
     #ID
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,)
 
     #Role
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    role = models.IntegerField(choices=ROLE_CHOICES)
     
     #Personal
     middle_name = models.CharField(max_length=50)

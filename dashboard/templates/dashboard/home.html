@@ -5,26 +5,49 @@
         <div class="row">
             <div class="card  col-md-4 m-1">
                 <div class="card-body" id='txtInput'>
-                    <h3>Result Status<div style="display: none;">.</div></h3>
-                    {% for item in uploads %}
+                    <h3>
+                        <div class="row">
+                            <div class="ml-3">Result Status</div><div style="display: none;">.</div>
+                        <a style="text-decoration:none" href="{% url 'file-upload' %}">
+                            <div class="btn btn-sm btn-dark ml-5">
+                                Upload
+                            </div>
+                        </a>
+                        </div>
+                        <!-- {% if request.user.role == 2 %}
+                        <div>
+                                <a style="text-decoration:none" href="{% url 'create-room' %}">
+                                    <div class="btn btn-dark mt-5">
+                                        <h5 style="color: white; vertical-align: middle;">Start Video Chat</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+                        <br><br> -->
+                        
+                    </h3>
                     <div class="row ">
                         <div class="col-md-6">
-                            <div><b>Image: </b>{{ item.id }} <div style="display: none;">.</div></div>
+                            <div><b>Image: </b>{{ uploads.id }} <div style="display: none;">.</div></div>
                             <div><b>Date Uploaded: </b></div>
-                            <div>{{ item.date_upload }}<div style="display: none;">.</div></div>
+                            <div>{{ uploads.date_upload }}<div style="display: none;">.</div></div>
                             <div><b>Result: </b></div>
-                            <div>{{ item.is_cancer }}<div style="display: none;">.</div></div>
+                            <div>{{ uploads.is_cancer }}<div style="display: none;">.</div></div>
                             <br>
+                            Precision, Recall, Accuracy
+                            <div>
+                                <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div><img style="max-width:100%;
-                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{item.file_uploaded}}" alt="skin cancer image"></div>
+                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{uploads.file_uploaded}}" alt="skin cancer image"></div>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
             <div class="card m-1 col-md-4" style="position: relative; ">
+                <h3 class="text-center p-3">Base on your age group</h3>
                 <div class="chart-container " >
                     <canvas id="myChart"></canvas>
                 </div>
@@ -32,30 +55,6 @@
                     <canvas id="myChart2"></canvas>
                 </div>
             </div>
-            <div class="col-md-3  p-3 text-center">
-                <div>
-                    <a style="text-decoration:none" href="{% url 'file-upload' %}">
-                        <div class="btn btn-dark mt-5">
-                            <h3 style="color: white; vertical-align: middle;">Upload Image</h3>
-                        </div>
-                    </a>
-                </div>
-                
-                {% if request.user.role.id == 2 %}
-                    <div>
-                        <a style="text-decoration:none" href="{% url 'create-room' %}">
-                            <div class="btn btn-dark mt-5">
-                                <h5 style="color: white; vertical-align: middle;">Start Video Chat</h5>
-                            </div>
-                        </a>
-                    </div>
-                {% endif %}
-                <br><br>
-                <div>
-                    <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
-                </div>
-            </div>
-            
         </div>
     </div>
     <!-- <input id='txtInput' /> <br><br>     -->
@@ -68,7 +67,7 @@
             data: {
                 labels: ['Total', 'Female', 'Male'],
                 datasets: [{
-                    label: 'Total # of Cancer',
+                    label: 'Total # of Cancer per Gender',
                     data: [{{total_gender}}, {{gender_female}}, {{gender_male}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -98,10 +97,10 @@
         var myChart2 = new Chart(ctx2, {
             type: 'bar',
             data: {
-                labels: ['Total', 'abdomen', 'acral', 'chest', 'upper_extremity', 'lower_extremity'],
+                labels: ['Total', 'abdomen', 'face', 'chest', 'upper_extremity', 'lower_extremity'],
                 datasets: [{
                     label: 'Total # of Cancer per Localization',
-                    data: [{{total_gender}}, {{abdomen}}, {{gendacraler_male}},
+                    data: [{{total_gender}}, {{abdomen}}, {{face}},
                              {{upper_extremity}}, {{lower_extremity}}
                         ],
                     backgroundColor: [

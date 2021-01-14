@@ -8,16 +8,19 @@ import io
 import matplotlib.pyplot as plt
 import urllib, base64
 from django.conf import settings
-
+from app.constants import DOCUMENT_API_URL, VIDEO_API_URL, USER_API_URL
 
 def dashboard(request):
-    url = f'https://document-dot-samp-051520.et.r.appspot.com/api/v1/file/list/?uploader={request.user}'
-    user_url = f'http://thesis-web-app-dot-samp-051520.et.r.appspot.com/api/v1/user/retrieve/{request.user}'
+    url = f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={request.user}'
+    user_url = f'{USER_API_URL}/api/v1/user/retrieve/{request.user}'
     csv_file_path = 'static/HAM10000_metadata.csv'
 
-    user_response = requests.get(user_url)
-    user_result = user_response.json()
-    age = user_result['age']
+    try:
+        user_response = requests.get(user_url)
+        user_result = user_response.json()
+        age = user_result['age']
+    except:
+        age = 0
 
     csv_file = pd.read_csv(csv_file_path)
     csv_file.isnull().sum()
@@ -68,21 +71,20 @@ def home(request):
     headers = {
         'Content-type': 'application/json'
     }
-    r = requests.get(f'https://document-dot-samp-051520.et.r.appspot.com/api/v1/file/list/?uploader={uploader}', headers=headers)
-    
-    list_of_uploads = []
-    for item in r.json()['results']:
-        list_of_uploads.append(item)
-        print(item)
-
-    url = f'https://document-dot-samp-051520.et.r.appspot.com/api/v1/file/list/?uploader={request.user}'
-    user_url = f'http://thesis-web-app-dot-samp-051520.et.r.appspot.com/api/v1/user/retrieve/{request.user}'
+    r = requests.get(f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={uploader}', headers=headers)
+    list_of_uploads = r.json()['results'][0]
+    print(list_of_uploads)
+    url = f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={request.user}'
+    user_url = f'{USER_API_URL}/api/v1/user/retrieve/{request.user}'
     csv_file_path = 'static/HAM10000_metadata.csv'
 
-    user_response = requests.get(user_url)
-    user_result = user_response.json()
-    print(user_result)
-    age = user_result['age']
+    try:
+        
+        user_response = requests.get(user_url)
+        user_result = user_response.json()
+        age = user_result['age']
+    except Exception:
+        age = 0
 
     csv_file = pd.read_csv(csv_file_path)
     csv_file.isnull().sum()
@@ -185,16 +187,12 @@ def file_upload(request):
             headers = {
                 "Content-Type": "multipart/form-data"
             }
-            r = requests.post('https://document-dot-samp-051520.et.r.appspot.com/api/v1/file/create/', data=body,  files=files)
-            print(r)
-            # print(r.json())
-            # messages.success(request, f'Account created for {student_number}!')
+            r = requests.post(f'{DOCUMENT_API_URL}/api/v1/file/create/', data=body,  files=files)
             return redirect('home')
     else:
         form = FileUploadForm()
 
     context = { 
-        # 'r': r.json(),
         'form': form  }
     return render(request, 'dashboard/file_upload/file_upload_page.html', context)
 
@@ -202,7 +200,7 @@ def video_chat(request, slug, *args, **kwargs):
 
 
     slug = request.user.id
-    room_api_link = f'https://thesis-video-chat-dot-samp-051520.et.r.appspot.com/api/v1/room/?search={slug}'
+    room_api_link = f'{VIDEO_API_URL}/api/v1/room/?search={slug}'
 
     r = requests.get(room_api_link)
     room = r.json()[0]
@@ -220,7 +218,7 @@ def video_chat(request, slug, *args, **kwargs):
 
 def create_room(request):
 
-    room_api_link = 'https://thesis-video-chat-dot-samp-051520.et.r.appspot.com/api/v1/room/'
+    room_api_link = f'{VIDEO_API_URL}/api/v1/room/'
     
     payload = {
         'title': str(request.user.id),
@@ -228,6 +226,7 @@ def create_room(request):
     }
 
     r = requests.post(room_api_link, data=payload)
+    print(r)
     return redirect('video-chat', slug=str(request.user.id))
 
 

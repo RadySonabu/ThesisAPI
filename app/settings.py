@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +26,7 @@ SECRET_KEY = 'c36d2ke(^213ov@6_(syknol%dd-tx*l6cg3eg$tlv9^_pt8pu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','thesis-web-app-dot-samp-051520.et.r.appspot.com', 'samp-051520.et.r.appspot.com']
+ALLOWED_HOSTS = ['127.0.0.1', '*']
 
 
 # Application definition
@@ -104,11 +105,11 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=user'
         },
-        'NAME': 'postgres',  # os.environ.get('DB_NAME)
-        'USER': 'postgres',  # os.environ.get('DB_USER)
-        'PASSWORD': 'thesispassword',  # os.environ.get('DB_PASS)
-        'HOST': '34.69.96.96',
-        'PORT': '5432',
+        'NAME': config('PGSQL_DATABASE'), 
+        'USER': config('PGSQL_USER'), 
+        'PASSWORD': config('PGSQL_PASSWORD'),  
+        'HOST': config('PGSQL_HOST'),
+        'PORT': config('PGSQL_PORT'),
     }
 }
 

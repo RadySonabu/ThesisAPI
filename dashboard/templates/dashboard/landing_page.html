@@ -22,13 +22,15 @@
                 {% endblock login %}
             </div>
         </div>
+    {% else %}
+        <h1>{{gender_cancer}}</h1>
+        
+        <br>
+        <div class="chart-container col-md-8 offset-md-2" style="position: relative; height:30vh; width:50vw">
+            <canvas id="myChart"></canvas>
+        </div>
     {% endif %}
-    <h1>{{gender_cancer}}</h1>
     
-    <br>
-    <div class="chart-container col-md-8 offset-md-2" style="position: relative; height:30vh; width:50vw">
-        <canvas id="myChart"></canvas>
-    </div>
 <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {

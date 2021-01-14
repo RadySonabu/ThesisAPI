@@ -7,7 +7,7 @@
         {% for doctor in doctors %}
         <a href="{% url 'contact-info' doctor.id %}" id="doctorDetail">
             <h5><div id='doctorBtnSpeak'>Dr. {{doctor.first_name| title}} {{doctor.last_name | title}}</div></h5>
-            <i><div>Dr. {{doctor.email}}</div></i>
+            <i><div>{{doctor.email}}</div></i>
             <br>
         </a>
         {% endfor %}
