@@ -23,46 +23,8 @@
             </div>
         </div>
     {% else %}
-        <h1>{{gender_cancer}}</h1>
         
-        <br>
-        <div class="chart-container col-md-8 offset-md-2" style="position: relative; height:30vh; width:50vw">
-            <canvas id="myChart"></canvas>
-        </div>
     {% endif %}
     
-<script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Total', 'Female', 'Male'],
-        datasets: [{
-            label: 'Total # of Cancer',
-            data: [{{total_gender}}, {{gender_female}}, {{gender_male}}],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-            ],    
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(75, 192, 192, 1)',
-                
-            ],
-            borderWidth: 1,
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
+
 {% endblock content %}

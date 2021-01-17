@@ -30,7 +30,9 @@ class MyUser(AbstractUser):
     role = models.IntegerField(choices=ROLE_CHOICES)
     
     #Personal
-    middle_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=100, default='')
+    first_name = models.CharField(max_length=100, default='')
+    middle_name = models.CharField(max_length=100)
     age = models.IntegerField()
     blood_type = models.CharField(max_length=50, blank=True, null=True)
 
