@@ -9,56 +9,21 @@ import matplotlib.pyplot as plt
 import urllib, base64
 from django.conf import settings
 from app.constants import DOCUMENT_API_URL, VIDEO_API_URL, USER_API_URL
+from django.contrib.auth.decorators import login_required
 
 def dashboard(request):
     url = f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={request.user}'
     user_url = f'{USER_API_URL}/api/v1/user/retrieve/{request.user}'
-    csv_file_path = 'static/HAM10000_metadata.csv'
-
-    try:
-        user_response = requests.get(user_url)
-        user_result = user_response.json()
-        age = user_result['age']
-    except:
-        age = 0
-
-    csv_file = pd.read_csv(csv_file_path)
-    csv_file.isnull().sum()
-
-    modified_csv_file = csv_file.dropna()
-    modified_csv_file.isnull().sum()
-
-    count = 0
-    gender_list = []
-    area_list = []
-    for item in modified_csv_file.itertuples():
-
-        if int(item[5]) > age - 3 and int(item[5]) < age + 3:
-            count +=1
-            gender_list.append(item[6])
-            area_list.append(item[7])
-
-    percent = area_list.count('upper extremity')/count
-    gender_female = gender_list.count('female')
-    gender_male = gender_list.count('male')
-    total_gender = gender_female + gender_male
-    gender_cancer = f'At age {age-5} - {age+10}, female with skin cancer is/are approximately{gender_female} and male with skin cancer is/are approximately {gender_male}'
-    face =area_list.count('face')
-    upper_extremity = area_list.count('upper extremity')
-    print(round(percent*100, 2))
-    print(count)
+    r = requests.get(url)
+    print(r.json())
+    
 
 
 
 
 
     context = {
-        'gender_cancer': gender_cancer,
-        'gender_male': gender_male,
-        'gender_female': gender_female,
-        'total_gender': total_gender,
-        'face': face,
-        'upper_extremity': upper_extremity,
+        
     }
     return render(request, 'dashboard/landing_page.html', context)
 
@@ -66,87 +31,30 @@ def about_page(request):
     context = {}
     return render(request, 'dashboard/about.html', context)
 
+@login_required
 def home(request):
     uploader = str(request.user)
     headers = {
         'Content-type': 'application/json'
     }
-    r = requests.get(f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={uploader}', headers=headers)
-    list_of_uploads = r.json()['results'][0]
-    print(list_of_uploads)
-    url = f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={request.user}'
-    user_url = f'{USER_API_URL}/api/v1/user/retrieve/{request.user}'
-    csv_file_path = 'static/HAM10000_metadata.csv'
-
+    # try:
     try:
-        
-        user_response = requests.get(user_url)
-        user_result = user_response.json()
-        age = user_result['age']
-    except Exception:
-        age = 0
-
-    csv_file = pd.read_csv(csv_file_path)
-    csv_file.isnull().sum()
-
-    modified_csv_file = csv_file.dropna()
-    modified_csv_file.isnull().sum()
-
-    count = 0
-    gender_list = []
-    area_list = []
-    for item in modified_csv_file.itertuples():
-
-        if int(item[5]) > age - 3 and int(item[5]) < age + 3:
-            count +=1
-            gender_list.append(item[6])
-            area_list.append(item[7])
-
-    percent = area_list.count('upper extremity')/count
-    gender_female = gender_list.count('female')
-    gender_male = gender_list.count('male')
-    total_gender = gender_female + gender_male
-    gender_cancer = f'At age {age-5} - {age+10}, female with skin cancer is/are approximately {gender_female} and male with skin cancer is/are approximately {gender_male}'
-    abdomen =area_list.count('abdomen')
-    acral =area_list.count('acral')
-    back =area_list.count('back')
-    chest =area_list.count('chest')
-    ear =area_list.count('ear')
-    face =area_list.count('face')
-    foot =area_list.count('foot')
-    genital =area_list.count('genital')
-    hand =area_list.count('hand')
-    lower_extremity =area_list.count('lower extremity')
-    neck =area_list.count('neck')
-    scalp =area_list.count('scalp')
-    trunk =area_list.count('trunk')
-    unknown =area_list.count('unknown')
-    upper_extremity = area_list.count('upper extremity')
-    # abdomen, acral, back, chest, ear, face, foot, genital, hand, lower extremity, neck, scalp, trunk, uknown, upper extremity
+        r = requests.get(f'{DOCUMENT_API_URL}/api/v1/file/list/?uploader={uploader}', headers=headers)
+        r2 = requests.get(f'{DOCUMENT_API_URL}/api/v1/file/get-analytics/')
+        analytics = r2.json()
+        list_of_uploads = r.json()[0]
+    except:
+        list_of_uploads = {}
     context = {
-        'gender_cancer': gender_cancer,
-        'gender_male': gender_male,
-        'gender_female': gender_female,
-        'total_gender': total_gender,
-        'abdomen':abdomen,
-        'acral':acral,
-        'back':back,
-        'chest':chest,
-        'ear':ear,
-        'face':face,
-        'foot':foot,
-        'genital':genital,
-        'hand':hand,
-        'lower_extremity':lower_extremity,
-        'neck':neck,
-        'scalp':scalp,
-        'trunk':trunk,
-        'unknown':unknown,
-        'upper_extremity':upper_extremity,
         'uploads': list_of_uploads,
+        'analytics': analytics
     }
+    # except:
+    #     redirect('login')
+    #     context = {}
     return render(request, 'dashboard/home.html', context)
 
+@login_required
 def available_doctor(request):
     doctors = MyUser.objects.filter(role=1)
     context = {
@@ -167,12 +75,12 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'dashboard/registration.html', {'form': form})
 
-
+@login_required
 def profile(request):
     context = {}
     return render(request, 'dashboard/profile.html', context)
 
-
+@login_required
 def file_upload(request):
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
@@ -180,8 +88,16 @@ def file_upload(request):
         if form.is_valid():
             
             file_upload = form.cleaned_data.get('file_upload')
+            patient_name = form.cleaned_data.get('patient_name')
+            patient_gender = form.cleaned_data.get('patient_gender')
+            patient_age = form.cleaned_data.get('patient_age')
+            lesion_location = form.cleaned_data.get('lesion_location')
             body = {
                         "uploader": f'{request.user}',
+                        "patient_name": patient_name,
+                        "patient_gender": patient_gender,
+                        "patient_age": patient_age,
+                        "lesion_location": lesion_location,
                 }
             files = {"file_uploaded": file_upload}
             headers = {
@@ -196,6 +112,7 @@ def file_upload(request):
         'form': form  }
     return render(request, 'dashboard/file_upload/file_upload_page.html', context)
 
+@login_required
 def video_chat(request, slug, *args, **kwargs):
 
 
@@ -216,6 +133,7 @@ def video_chat(request, slug, *args, **kwargs):
 
     return render(request, 'dashboard/video_chat/video_chat.html', context)
 
+@login_required
 def create_room(request):
 
     room_api_link = f'{VIDEO_API_URL}/api/v1/room/'

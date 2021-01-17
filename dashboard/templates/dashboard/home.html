@@ -3,7 +3,7 @@
 
     <div class="col-md-12">
         <div class="row">
-            <div class="card  col-md-4 m-1">
+            <div class="card shadow col-md-4 m-1">
                 <div class="card-body" id='txtInput'>
                     <h3>
                         <div class="row">
@@ -34,7 +34,7 @@
                             <div><b>Result: </b></div>
                             <div>{{ uploads.is_cancer }}<div style="display: none;">.</div></div>
                             <br>
-                            Precision, Recall, Accuracy
+                            <!-- Precision, Recall, Accuracy -->
                             <div>
                                 <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
                             </div>
@@ -46,13 +46,22 @@
                     </div>
                 </div>
             </div>
-            <div class="card m-1 col-md-4" style="position: relative; ">
-                <h3 class="text-center p-3">Base on your age group</h3>
+            <div class="card shadow m-1 col-md-3" style="position: relative; ">
+                <h3 class="text-center p-3">Analytics</h3>
                 <div class="chart-container " >
                     <canvas id="myChart"></canvas>
                 </div>
                 <div class="chart-container " >
                     <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+            <div class="card shadow m-1 col-md-3" style="position: relative; ">
+                <h3 class="text-center p-3">Analytics</h3>
+                <div class="chart-container " >
+                    <canvas id="myChart3"></canvas>
+                </div>
+                <div class="chart-container " >
+                    <canvas id="myChart4"></canvas>
                 </div>
             </div>
         </div>
@@ -62,28 +71,32 @@
 
         var ctx = document.getElementById('myChart').getContext('2d');
         var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var ctx3 = document.getElementById('myChart3').getContext('2d');
+        var ctx4 = document.getElementById('myChart4').getContext('2d');
+        
         var myChart = new Chart(ctx, {
-            type: 'bar',
+            type: 'pie',
             data: {
-                labels: ['Total', 'Female', 'Male'],
+                labels: ['Male', 'Female'],
                 datasets: [{
                     label: 'Total # of Cancer per Gender',
-                    data: [{{total_gender}}, {{gender_female}}, {{gender_male}}],
+                    data: [{{analytics.count_male}}, {{analytics.count_female}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
                     ],    
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
                         
                     ],
                     borderWidth: 1,
                 }]
             },
             options: {
+                legend: {
+                    
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -95,34 +108,100 @@
         });
 
         var myChart2 = new Chart(ctx2, {
-            type: 'bar',
+            type: 'pie',
             data: {
-                labels: ['Total', 'abdomen', 'face', 'chest', 'upper_extremity', 'lower_extremity'],
+                labels: ['Head', 'Body', 'Arms', 'lower_extremity'],
                 datasets: [{
                     label: 'Total # of Cancer per Localization',
-                    data: [{{total_gender}}, {{abdomen}}, {{face}},
-                             {{upper_extremity}}, {{lower_extremity}}
+                    data: [{{analytics.count_head}}, {{analytics.count_body}}, {{analytics.count_arms}},
+                            {{analytics.count_lower_extremities}}
                         ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
                     ],    
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1,
                 }]
             },
             options: {
+                legend :{
+                    
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var myChart3 = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ['Malignant', 'Benign'],
+                datasets: [{
+                    label: 'Total # of Cancer per Localization',
+                    data: [{{analytics.count_malignant_today}}, {{analytics.count_benign_today}},
+                        ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                legend :{
+
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var myChart4 = new Chart(ctx4, {
+            type: 'line',
+            data: {
+                labels: ['Today', 'Week', 'Month'],
+                datasets: [{
+                    data: [{{analytics.number_of_use_this_day}}, {{analytics.number_of_use_this_week}}, {{analytics.number_of_use_this_month}},
+                        ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                    ],    
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                    ],
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                legend :{
+                    display: false
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
