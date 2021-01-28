@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/main.css' %}">
     <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
     <title>Skin Cancer Detection</title>
     <style>
       /* body, html {
@@ -69,6 +70,7 @@
                 <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
                 <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
                 <a class="nav-item nav-link" href="{% url 'create-room' %}">Video Call</a>
+                <a class="nav-item nav-link" href="{% url 'analytics' %}">Analytics</a>
                 {% if user.role.id == 1 %}
                 <a class="nav-item nav-link" href="{% url 'available-doctor' %}">Doctors</a>
                 {% endif %}

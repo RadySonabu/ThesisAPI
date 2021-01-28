@@ -156,12 +156,17 @@ def view_contact_information(request, id, *args, **kwargs):
     }
     return render(request, 'dashboard/contact.html', context)
 
+@login_required
 def analytics(request):
+    r2 = requests.get(f'{DOCUMENT_API_URL}/api/v1/file/get-analytics/')
+    analytics = r2.json()
     context = {
-        'analytics': 'this is analytics'
+        'analytics': analytics
     }
-    return render(request, 'dashboard/landing_page.html', context)
+    return render(request, 'dashboard/analytics.html', context)
 
-
+def terms_and_conditions(request):
+    context = {}
+    return render(request, 'dashboard/terms_and_conditions.html', context)
 
 

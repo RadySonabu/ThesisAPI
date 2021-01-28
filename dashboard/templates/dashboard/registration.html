@@ -1,15 +1,26 @@
 {% extends "dashboard/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
+    <div class="content-section col-md-6 offset-md-3">
         <form method="POST">
+            
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Join Today</legend>
+                <small>By signing up, You have read and agree with the <a href="{% url 'terms-and-conditions' %}">
+                    Terms & Conditions and Privacy Policy
+                </a>.</small>
+                <hr>
                 {{ form|crispy }}
             </fieldset>
+            <small>By signing up, You have read and agree with the <a href="{% url 'terms-and-conditions' %}">
+                Terms & Conditions and Privacy Policy
+            </a>.</small>
+            <br>
+            <hr>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+                <input type="checkbox"  onchange="document.getElementById('submitButton').disabled = !this.checked;" />
+                <button id="submitButton" class="btn btn-sm btn-info" type="submit" disabled>Sign Up</button>
             </div>
         </form>
         <div class="border-top pt-3">

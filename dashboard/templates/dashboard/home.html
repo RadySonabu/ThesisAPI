@@ -1,18 +1,19 @@
 {% extends "dashboard/base.html" %}
+{% load mathfilters %}
 {% block content %}
 
     <div class="col-md-12">
         <div class="row">
-            <div class="card shadow col-md-4 m-1">
+            <div class="card col-md-6 offset-md-3">
                 <div class="card-body" id='txtInput'>
                     <h3>
                         <div class="row">
-                            <div class="ml-3">Result Status</div><div style="display: none;">.</div>
-                        <a style="text-decoration:none" href="{% url 'file-upload' %}">
-                            <div class="btn btn-sm btn-dark ml-5">
-                                Upload
-                            </div>
-                        </a>
+                            <div class="mr-auto">Result Status</div><div style="display: none;">.</div>
+                            <a style="text-decoration:none" href="{% url 'file-upload' %}">
+                                <div class="btn btn-sm btn-dark ">
+                                    Upload
+                                </div>
+                            </a>
                         </div>
                         <!-- {% if request.user.role == 2 %}
                         <div>
@@ -28,214 +29,33 @@
                     </h3>
                     <div class="row ">
                         <div class="col-md-6">
+                            <div><img style="max-width:100%;
+                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{uploads.file_uploaded}}" alt="skin cancer image">
+                            </div>
+                        
+                            
+                        </div>
+                        <div class="col-md-6">
                             <div><b>Image: </b>{{ uploads.id }} <div style="display: none;">.</div></div>
                             <div><b>Date Uploaded: </b></div>
                             <div>{{ uploads.date_upload }}<div style="display: none;">.</div></div>
                             <div><b>Result: </b></div>
                             <div>{{ uploads.is_cancer }}<div style="display: none;">.</div></div>
+                            
+                            
+                            
                             <br>
                             <!-- Precision, Recall, Accuracy -->
                             <div>
                                 <button class="btn btn-dark" id='btnSpeak'>Read results!</button>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div><img style="max-width:100%;
-                                max-height:100%;border: 5px solid rgb(143, 143, 143);" src="{{uploads.file_uploaded}}" alt="skin cancer image"></div>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card shadow m-1 col-md-3" style="position: relative; ">
-                <h3 class="text-center p-3">Analytics</h3>
-                <div class="chart-container " >
-                    <canvas id="myChart"></canvas>
-                </div>
-                <div class="chart-container " >
-                    <canvas id="myChart2"></canvas>
-                </div>
-            </div>
-            <div class="card shadow m-1 col-md-3" style="position: relative; ">
-                <h3 class="text-center p-3">Analytics</h3>
-                <div class="chart-container " >
-                    <canvas id="myChart3"></canvas>
-                </div>
-                <div class="chart-container " >
-                    <canvas id="myChart4"></canvas>
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- <input id='txtInput' /> <br><br>     -->
-    <script>
-
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var ctx2 = document.getElementById('myChart2').getContext('2d');
-        var ctx3 = document.getElementById('myChart3').getContext('2d');
-        var ctx4 = document.getElementById('myChart4').getContext('2d');
-        
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Male', 'Female'],
-                datasets: [{
-                    label: 'Total # of Cancer per Gender',
-                    data: [{{analytics.count_male}}, {{analytics.count_female}}],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                    ],    
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                legend: {
-                    
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-        var myChart2 = new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: ['Head', 'Body', 'Arms', 'lower_extremity'],
-                datasets: [{
-                    label: 'Total # of Cancer per Localization',
-                    data: [{{analytics.count_head}}, {{analytics.count_body}}, {{analytics.count_arms}},
-                            {{analytics.count_lower_extremities}}
-                        ],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                    ],    
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(75, 192, 192, 1)',
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                legend :{
-                    
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-        var myChart3 = new Chart(ctx3, {
-            type: 'pie',
-            data: {
-                labels: ['Malignant', 'Benign'],
-                datasets: [{
-                    label: 'Total # of Cancer per Localization',
-                    data: [{{analytics.count_malignant_today}}, {{analytics.count_benign_today}},
-                        ],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                    ],    
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                legend :{
-
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-        var myChart4 = new Chart(ctx4, {
-            type: 'line',
-            data: {
-                labels: ['Today', 'Week', 'Month'],
-                datasets: [{
-                    data: [{{analytics.number_of_use_this_day}}, {{analytics.number_of_use_this_week}}, {{analytics.number_of_use_this_month}},
-                        ],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                    ],    
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(75, 192, 192, 1)',
-                    ],
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                legend :{
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-
-        var txtInput = document.getElementById('txtInput');
-        // var voiceList = document.querySelector('#voiceList');
-        var btnSpeak = document.querySelector('#btnSpeak');
-        var synth = window.speechSynthesis;
-        var voices = [];
-
-
-        var doctorBtnSpeak = document.querySelector('#doctorBtnSpeak');
-        var doctorDetail = document.getElementById('doctorDetail');
-
-
-
-        btnSpeak.addEventListener('click', ()=> {
-            var toSpeak = new SpeechSynthesisUtterance(txtInput.innerHTML);
-            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
-            synth.speak(toSpeak);
-        });
-
-        doctorBtnSpeak.addEventListener('click', ()=> {
-            var toSpeak = new SpeechSynthesisUtterance("Viewing contact details");
-            var selectedVoiceName = "Microsoft David Desktop - English (United States)";
-            synth.speak(toSpeak);
-        });
-
-    </script>
+   
 {% endblock content %}
