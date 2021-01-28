@@ -11,6 +11,7 @@ from .views import (
     create_room,
     view_contact_information,
     analytics,
+    terms_and_conditions
     )
 from user.views import update_user, delete_user
 urlpatterns = [
@@ -27,5 +28,5 @@ urlpatterns = [
     path('create-room/', create_room, name='create-room'),
     path('contact-info/<id>/', view_contact_information, name='contact-info'),
     path('analytics/', analytics, name='analytics'),
-    
+    path('terms-and-conditions/', terms_and_conditions, name='terms-and-conditions'),
 ]

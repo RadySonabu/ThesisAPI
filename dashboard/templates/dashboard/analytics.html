@@ -1,0 +1,508 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow m-1 col-md-12" style="position: relative; ">
+        <h3 class="text-center p-3">Analytics Today</h3>
+        <div class="row">
+            <div class="card col-md-3 offset-md-2 p-3 m-1">
+                <h3>Male</h3>
+                <div class="chart-container text-center " >
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-3 p-3 m-1">
+                <h3>Female</h3>
+                <div class="chart-container " >
+                    <canvas id="myChartF"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-4 p-3 m-1">
+                <h3>Localization</h3>
+                <div class="chart-container " >
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow m-1 col-md-12" style="position: relative; ">
+        <h3 class="text-center p-3">Analytics This Week</h3>
+        <div class="row">
+            <div class="card col-md-3 p-3 m-1">
+                <h3>Male</h3>
+                <div class="chart-container text-center " >
+                    <canvas id="myChartWeek"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-3 p-3 m-1">
+                <h3>Female</h3>
+                <div class="chart-container " >
+                    <canvas id="myChartFWeek"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-4 p-3 m-1">
+                <h3>Localization</h3>
+                <div class="chart-container " >
+                    <canvas id="myChart2Week"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow m-1 col-md-12" style="position: relative; ">
+        <h3 class="text-center p-3">Analytics This Month</h3>
+        <div class="row">
+            <div class="card col-md-3 p-3 m-1">
+                <h3>Male</h3>
+                <div class="chart-container text-center " >
+                    <canvas id="myChartMonth"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-3 p-3 m-1">
+                <h3>Female</h3>
+                <div class="chart-container " >
+                    <canvas id="myChartFMonth"></canvas>
+                </div>
+            </div>
+            <div class="card col-md-4 p-3 m-1">
+                <h3>Localization</h3>
+                <div class="chart-container " >
+                    <canvas id="myChart2Month"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var ctxf = document.getElementById('myChartF').getContext('2d');
+    var ctxweek = document.getElementById('myChartWeek').getContext('2d');
+    var ctxfweek = document.getElementById('myChartFWeek').getContext('2d');
+    var ctxmonth = document.getElementById('myChartMonth').getContext('2d');
+    var ctxfmonth = document.getElementById('myChartFMonth').getContext('2d');
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var ctx2week = document.getElementById('myChart2Week').getContext('2d');
+    var ctx2month = document.getElementById('myChart2Month').getContext('2d');
+    
+    
+    var myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.tmm}}, {{analytics.tmb}}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    
+                ],    
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    
+
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var myChartF = new Chart(ctxf, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.tfm}}, {{analytics.tfb}}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                ],    
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var myChartWeek = new Chart(ctxweek, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.wmm}}, {{analytics.wmb}}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    
+                ],    
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var myChartFWeek = new Chart(ctxfweek, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.wfm}}, {{analytics.wfb}}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    
+                ],    
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var myChartMonth = new Chart(ctxmonth, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.mmm}}, {{analytics.mmb}}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    
+                ],    
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+  
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var myChartFMonth = new Chart(ctxfmonth, {
+        type: 'pie',
+        data: {
+            labels: ['Malignant', 'Benign'],
+            datasets: [{
+                label: 'Total # of Cancer per Gender',
+                data: [{{analytics.mfm}}, {{analytics.mfb}}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                ],    
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend: {
+                align: 'center',
+            },
+            plugins: {
+                labels: {
+                render: 'percentage',
+                fontColor: ['green', 'black'],
+                precision: 2
+                }
+            },
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        mirror: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+
+
+
+    var myChart2 = new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: ['Head', 'Body', 'Arms', 'lower_extremity'],
+            datasets: [{
+                label: 'Total # of Cancer per Localization',
+                data: [{{analytics.count_today_head}}, {{analytics.count_today_body}}, {{analytics.count_today_arms}},
+                        {{analytics.count_today_lower_extremities}}
+                    ],
+                backgroundColor: [
+                    'rgba(222,184,135, 0.5)',
+                    'rgba(218,165,32, 0.5)',
+                    'rgba(139,69,19,0.5)',
+                    'rgba(210,105,30, 0.5)',
+                ],    
+                borderColor: [
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend :{
+                
+            },
+            plugins: {
+                labels: {
+                render: 'number',
+                fontColor: ['black'],
+                precision: 2
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var myChart2Week = new Chart(ctx2week, {
+        type: 'pie',
+        data: {
+            labels: ['Head', 'Body', 'Arms', 'lower_extremity'],
+            datasets: [{
+                data: [{{analytics.count_week_head}}, {{analytics.count_week_body}}, {{analytics.count_week_arms}},
+                        {{analytics.count_week_lower_extremities}}
+                    ],
+                backgroundColor: [
+                    'rgba(222,184,135, 0.5)',
+                    'rgba(218,165,32, 0.5)',
+                    'rgba(139,69,19,0.5)',
+                    'rgba(210,105,30, 0.5)',
+                ],    
+                borderColor: [
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend :{
+                
+            },
+            plugins: {
+                labels: {
+                render: 'number',
+                fontColor: ['black'],
+                precision: 2
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    var myChart2Month = new Chart(ctx2month, {
+        type: 'pie',
+        data: {
+            labels: ['Head', 'Body', 'Arms', 'lower_extremity'],
+            datasets: [{
+                label: 'Total # of Cancer per Localization',
+                data: [{{analytics.count_month_head}}, {{analytics.count_month_body}}, {{analytics.count_month_arms}},
+                        {{analytics.count_month_lower_extremities}}
+                    ],
+                backgroundColor: [
+                    'rgba(222,184,135, 0.5)',
+                    'rgba(218,165,32, 0.5)',
+                    'rgba(139,69,19,0.5)',
+                    'rgba(210,105,30, 0.5)',
+                ],    
+                borderColor: [
+                    
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            legend :{
+                
+            },
+            plugins: {
+                labels: {
+                render: 'number',
+                fontColor: ['black'],
+                precision: 2
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    
+
+
+    var txtInput = document.getElementById('txtInput');
+    // var voiceList = document.querySelector('#voiceList');
+    var btnSpeak = document.querySelector('#btnSpeak');
+    var synth = window.speechSynthesis;
+    var voices = [];
+
+
+    var doctorBtnSpeak = document.querySelector('#doctorBtnSpeak');
+    var doctorDetail = document.getElementById('doctorDetail');
+
+
+
+    btnSpeak.addEventListener('click', ()=> {
+        var toSpeak = new SpeechSynthesisUtterance(txtInput.innerHTML);
+        var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+        synth.speak(toSpeak);
+    });
+
+    doctorBtnSpeak.addEventListener('click', ()=> {
+        var toSpeak = new SpeechSynthesisUtterance("Viewing contact details");
+        var selectedVoiceName = "Microsoft David Desktop - English (United States)";
+        synth.speak(toSpeak);
+    });
+
+</script>
+{% endblock content %}
